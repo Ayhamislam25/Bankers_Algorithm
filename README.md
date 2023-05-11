@@ -67,7 +67,7 @@ Contributions to this project are welcome. If you find any issues or have sugges
 
 ## License
 
-This project is licensed under the [Arab Academy for Science and Technology License](LICENSE). You are free to use, modify, and distribute the code as permitted by the license.
+This project is licensed under the [Arab Academy for Science and Technology License](LICENSE). You are free to use, modify, and distribute the code as permitted by the license Under the Supervasion of DR.Sherif Fadel.
 
 ## Acknowledgments
 
