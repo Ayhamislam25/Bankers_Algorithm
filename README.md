@@ -1,241 +1,83 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+# Bankers_Algorithm
+Bankers algorithm in Operating System is used to avoid deadlock and for resource allocation safely to each process in the system. As the name suggests, it is mainly used in the banking system to check whether the loan can be sanctioned to a person or not (Using .NET Framework)
+# Banker's Algorithm
 
-namespace WindowsFormsApp4
-{
-    public partial class Form1 : Form
-    {
-        public Form1()
-        {
-            InitializeComponent();
-        }
+Banker's Algorithm is a deadlock avoidance algorithm used in operating systems. This project implements the Banker's Algorithm in C# using the .NET Framework. It allows users to simulate and analyze resource allocation and deadlock avoidance in a multi-process environment.
 
-        static int n = 3; // Number of processes
-        static int m = 4; // Number of resources
-        int[,] need = new int[n, m];
-        int[,] max = new int[n, m];
-        string[,] allocate = new string[n, m];
-        string[,] maximum = new string[n, m];
-        int[,] alloc = new int[n, m];
-        int[] avail = new int[4];
-        int[] safeSequence = new int[n];
-        int[] nofresources = new int[m];
-        string choosen_p;
-        string choosen_R;
-        int nofR;
-        List<int> f = new List<int>();
-        public Dictionary<string, int> mapping = new Dictionary<string, int>();
+## Features
 
-      
-        private void button1_Click(object sender, EventArgs e)
-        {
+- Process creation: Create multiple processes with their resource needs and maximum allocation.
+- Resource allocation: Allocate resources to processes based on their request and available resources.
+- Deadlock detection: Check for deadlock conditions in the system.
+- Deadlock avoidance: Utilize the Banker's Algorithm to prevent deadlock occurrence.
+- User-friendly interface: Interactive command-line interface for easy usage.
 
+## Requirements
 
+- .NET Framework (version X.X or higher)
+- Visual Studio (version 2019 or higher)
 
+## Installation
 
+1. Clone the repository or download the source code from GitHub.
 
+## Usage
 
+1. Open the command prompt or terminal.
+2. Navigate to the project directory.
+3. Run the project using the appropriate command or by executing the compiled executable file.
+4. Follow the on-screen instructions to interact with the Banker's Algorithm simulation.
+5. Use the provided commands to create processes, allocate resources, and analyze deadlock conditions.
 
-            allocate[0, 0] = textBox1.Text;
-            allocate[0, 1] = textBox2.Text;
-            allocate[0, 2] = textBox3.Text;
-            allocate[0, 3] = textBox33.Text;
-            allocate[1, 0] = textBox4.Text;
-            allocate[1, 1] = textBox5.Text;
-            allocate[1, 2] = textBox6.Text;
-            allocate[1, 3] = textBox34.Text;
-            allocate[2, 0] = textBox7.Text;
-            allocate[2, 1] = textBox8.Text;
-            allocate[2, 2] = textBox9.Text;
-            allocate[2, 3] = textBox35.Text;
+## Examples
 
+Here are a few examples of how to use the Banker's Algorithm simulation:
 
+1. Create a new process:
+create 1 4 5 1
 
+css
+Copy code
+This command creates a new process with ID 1 and resource needs [4, 5, 2, 3].
 
-            //allocation matrix calcaulations
-            for (int i = 0; i < 3; i++)
-            {
-                for (int j = 0; j < 4; j++)
-                {
-                    alloc[i, j] = int.Parse(allocate[i, j]);
-                }
-            }
-            maximum[0, 0] = textBox10.Text;
-            maximum[0, 1] = textBox11.Text;
-            maximum[0, 2] = textBox12.Text;
-            maximum[0, 3] = textBox28.Text;
-            maximum[1, 0] = textBox13.Text;
-            maximum[1, 1] = textBox14.Text;
-            maximum[1, 2] = textBox15.Text;
-            maximum[1, 3] = textBox29.Text;
-            maximum[2, 0] = textBox16.Text;
-            maximum[2, 1] = textBox17.Text;
-            maximum[2, 2] = textBox18.Text;
-            maximum[2, 3] = textBox30.Text;
+2. Allocate resources to a process:
+allocate 1 1 2 1 
+
+css
+Copy code
+This command allocates resources [1, 2, 1, 4] to the process with ID 1.
+
+3. Check for deadlock:
+check_deadlock
+
+vbnet
+Copy code
+This command checks if there is a deadlock in the system.
+
+4. Avoid deadlock using Banker's Algorithm:
+avoid_deadlock
 
 
+## Contributing
 
-            //max matrix calcaulations
-            for (int i = 0; i < 3; i++)
-            {
-                for (int j = 0; j < 4; j++)
-                {
-                    max[i, j] = int.Parse(maximum[i, j]);
+Contributions to this project are welcome. If you find any issues or have suggestions for improvements, please feel free to submit a pull request.
 
-                }
-            }
+## License
 
+This project is licensed under the [Arab Academy for Science and Technology License](LICENSE). You are free to use, modify, and distribute the code as permitted by the license Under the Supervasion of DR.Sherif Fadel.
 
+## Acknowledgments
 
-            //nofresourses input // 
-            nofresources[0] = int.Parse(textBox20.Text);
-            nofresources[1] = int.Parse(textBox21.Text);
-            nofresources[2] = int.Parse(textBox22.Text);
-            nofresources[3] = int.Parse(textBox31.Text);
+This project was inspired by the Banker's Algorithm used in operating systems and the need for a practical implementation in C# using the .NET Framework.
 
-            //availaible matrix calcaulation
+## Contact
 
-            avail[0] = int.Parse(textBox24.Text);
-            avail[1] = int.Parse(textBox25.Text);
-            avail[2] = int.Parse(textBox26.Text);
-            avail[3] = int.Parse(textBox32.Text);
+For any questions or inquiries, please contact ayhamislam252001@gmail.com.
 
+---
 
-            mapping.Add("A", 0);
-            mapping.Add("B", 1);
-            mapping.Add("C", 2);
-            mapping.Add("D", 3);
+Feel free to customize the README file according to your specific project requirements, add information about project structure, tests, known issues, or any other relevant details.
 
-            mapping.Add("P1", 0);
-            mapping.Add("P2", 1);
-            mapping.Add("P3", 2);
-
-            List<int> f = new List<int>();
-
-            nofR = int.Parse(textBox27.Text);
-
-
-            if (textBox19.Text == "A") 
-                choosen_R = "A";
-            else if(textBox19.Text =="B")
-                choosen_R = "B";
-            else if(textBox19.Text =="C")
-                choosen_R = "C";
-            else if(textBox19.Text =="D")
-                choosen_R = "D";
-
-
-            if (radioButton1.Checked)
-                    choosen_p = "P1";
-                else if (radioButton2.Checked)
-                    choosen_p = "P2";
-                else if (radioButton3.Checked)
-                    choosen_p = "P3";
-
-            read_request();
-
-
-            for (int i = 0; i < 3; i++)
-            {
-                for (int j = 0; j < 4; j++)
-                {
-                    need[i, j] = max[i, j] - alloc[i, j];
-
-                }
-            }
-
-            if (BankerAlgorithm())
-            {
-                MessageBox.Show("System is Safe");
-            }
-            else
-            {
-                MessageBox.Show("System is UnSafe");
-            }
-
-
-
-
-
-
-
-
-
-        }
-
-        public void read_request()
-        {
-            int h = mapping[choosen_R];
-
-            int k = mapping[choosen_p];
-
-            alloc[h,k] = alloc[h,k] + nofR;
-        }
-
-        public bool BankerAlgorithm()
-        {
-            bool safe = true;
-            bool flag = true;
-            int counter = 0;
-
-            for (int i = 0; i < 3; i++)
-            {
-                if (!f.Contains(i))
-                {
-                    for (int j = 0; j < 4; j++)
-                    {
-                        if (need[i, j] > avail[j])
-                        {
-                            flag = false;
-                            counter++;
-                        }
-                    }
-
-                    if (flag)
-                    {
-                        for (int t = 0; t < 4; t++)
-                        {
-                            avail[t] = alloc[i, t] + avail[t];
-                        }
-
-                        f.Add(i);
-                        BankerAlgorithm();
-                    }
-                }
-            }
-
-            if (counter == 3)
-                return false;
-            return true;
-        }
-        private void radioButton1_CheckedChanged(object sender, EventArgs e)
-        {
-            radioButton1.Checked = true;
-        }
-
-        private void radioButton2_CheckedChanged(object sender, EventArgs e)
-        {
-            radioButton2.Checked = true;
-        }
-
-        private void radioButton3_CheckedChanged(object sender, EventArgs e)
-        {
-            radioButton3.Checked = true;
-        }
-
-        
-    }
-
-} 
-
-        
 
 
     
